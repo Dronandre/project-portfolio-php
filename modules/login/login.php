@@ -2,6 +2,37 @@
 
 $pageTitle = "Вход на сайт";
 
+
+if(isset($_POST['login'])) {
+    if(trim($_POST['email'] == '')){
+        $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
+    } else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors[] = ['title' => 'Введите корректный Email'];
+    }    
+    if(trim($_POST['password'] == '' )){
+        $errors[] = ['title' => 'Введите пароль'];
+    } else if (strlen($_POST['password']) <= 4){
+        $errors[] = ['title' => 'Пароль должен быть больше 4-х символов'];
+    }
+
+    if(empty($errors)){
+        $user = R::findOne('users', 'email = ?', array($_POST['email']));
+
+        if($user) {
+            if (password_verify($_POST['password'], $user->password)) {
+                $success[] = ['title' => 'Верный пароль'];
+            } else {
+                $errors[] = ['title' => 'Неверный пароль'];
+            }
+        } else {
+            $errors[] = ['title' => 'Неверный Email'];
+        }
+    }
+
+}
+
+
+
 ob_start();
 include ROOT . "templates/login/form-login.tpl";
 $content = ob_get_contents();
