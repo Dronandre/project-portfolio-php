@@ -1,6 +1,8 @@
 <?php
 
 $pageTitle = "Регистрация";
+$pageClass = "authorization-page";
+
 
 if(isset($_POST['register'])){
     if(trim($_POST['email'] == '')){
@@ -30,7 +32,13 @@ if(isset($_POST['register'])){
         $user->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $result = R::store($user);
         if (is_int($result)) {
-            $success[] = ['title' => 'Регистрация прошла успешно'];
+            // Автологин пользователя
+            $_SESSION['logged_user'] = $user;
+            $_SESSION['login'] = 1;
+            $_SESSION['role'] = $user->role;
+
+            header('Location:' . HOST . "profile-edit");
+            exit();
         } else {
             $errors[] = ['title' => 'Что-то пошло не так.Повторите действие заново'];
         }

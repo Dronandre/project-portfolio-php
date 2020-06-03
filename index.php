@@ -6,6 +6,8 @@ require_once "db.php";
 $errors = array();
 $success = array();
 
+session_start();
+
 // ---------------------РОУТЕР---------------------------
 
 // Обработка запроса
@@ -14,8 +16,13 @@ $uri = rtrim($uri, '/');
 $uri = filter_var($uri, FILTER_SANITIZE_URL);
 $uri = substr($uri, 1);
 $uri = explode('?', $uri);
+
+$uriGet = isset($uri[1]) ? $uri[1] : null;
+$uriArray = explode('/', $uri[0]);
+$uriModule = $uriArray[0];
+
 // Роутер
-switch ($uri[0]){
+switch ($uriModule){
     case '':
         require ROOT . "modules/main/index.php";
         break;
@@ -36,7 +43,7 @@ switch ($uri[0]){
         require ROOT . "modules/login/set-new-password.php";
         break;    
     case 'profile':
-        require ROOT . "modules/profile/index.php";
+        require ROOT . "modules/profile/profile.php";
         break;    
     case 'profile-edit':
         require ROOT . "modules/profile/edit.php";

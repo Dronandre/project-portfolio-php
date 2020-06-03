@@ -11,4 +11,9 @@
 	<link rel="stylesheet" href="<?php echo HOST ?>static/css/custom.css" />
 </head>
 
-<body class="authorization-page">
+<?php if (isset($pageClass) && $pageClass === 'authorization-page'): ?>
+	<body class="authorization-page">	
+<?php else: ?>
+	<body class="sticky-footer <?php echo isset($pageClass) ? $pageClass : ''; ?> ">
+<?php endif; ?>
+

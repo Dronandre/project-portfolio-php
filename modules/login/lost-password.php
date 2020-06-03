@@ -1,6 +1,8 @@
 <?php
 
 $pageTitle = "Восстановить пароля";
+$pageClass = "authorization-page";
+
 
 if(isset($_POST['lost-password'])) {
     $_POST['email'] = trim($_POST['email']);
