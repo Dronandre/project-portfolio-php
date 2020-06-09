@@ -6,34 +6,36 @@ $pageClass = "authorization-page";
 
 if (isset($_POST['login'])) {
     if (trim($_POST['email'] == '')) {
-        $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
+        $_SESSION['errors'][] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
     } else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = ['title' => 'Введите корректный Email'];
+        $_SESSION['errors'][] = ['title' => 'Введите корректный Email'];
     }
     if (trim($_POST['password'] == '')) {
-        $errors[] = ['title' => 'Введите пароль'];
+        $_SESSION['errors'][] = ['title' => 'Введите пароль'];
     } else if (strlen($_POST['password']) <= 4) {
-        $errors[] = ['title' => 'Пароль должен быть больше 4-х символов'];
+        $_SESSION['errors'][] = ['title' => 'Пароль должен быть больше 4-х символов'];
     }
 
-    if (empty($errors)) {
+    if (empty($_SESSION['errors'])) {
         $user = R::findOne('users', 'email = ?', array($_POST['email']));
 
         if ($user) {
             if (password_verify($_POST['password'], $user->password)) {
-                // $success[] = ['title' => 'Верный пароль'];
+                // $_SESSION['success'] = ['title' => 'Верный пароль'];
                 // Автологин пользователя
                 $_SESSION['logged_user'] = $user;
                 $_SESSION['login'] = 1;
                 $_SESSION['role'] = $user->role;
 
+                $_SESSION['success'][] = ['title' => 'Вы успешно зашли на сайт'];
+
                 header('Location:' . HOST . "profile");
                 exit();
             } else {
-                $errors[] = ['title' => 'Неверный пароль'];
+                $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
             }
         } else {
-            $errors[] = ['title' => 'Неверный Email'];
+            $_SESSION['errors'][] = ['title' => 'Неверный Email'];
         }
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+
 $pageTitle = "Восстановить пароля";
 $pageClass = "authorization-page";
 
@@ -7,12 +8,12 @@ $pageClass = "authorization-page";
 if(isset($_POST['lost-password'])) {
     $_POST['email'] = trim($_POST['email']);
     if(trim($_POST['email'] == '')){
-        $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
+        $_SESSION['errors'][] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
     } else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = ['title' => 'Введите корректный Email'];
+        $_SESSION['errors'][] = ['title' => 'Введите корректный Email'];
     }  
 
-    if(empty($errors)) {
+    if(empty($_SESSION['errors'])) {
         $user = R::findOne('users', 'email = ?', array($_POST['email']));
         if($user) {
             function random_str($num=30){
@@ -36,12 +37,12 @@ if(isset($_POST['lost-password'])) {
             $resultEmail = mail($_POST['email'], 'Восстановление доступа', $recovery_message, $headers);
 
             if ($resultEmail) {
-                $success[] = ['title' => 'Проверьте почту', 'desc' => '<p>Вам было отправлено письмо со ссылкой для сброса пароля.</p>'];
+                $_SESSION['success'][] = ['title' => 'Проверьте почту', 'desc' => '<p>Вам было отправлено письмо со ссылкой для сброса пароля.</p>'];
             } else {
-                $errors[] = ['title' => 'Что-то пошло не так', 'desc' => '<p>Произошла ошибка. Повторите отправку формы еще раз.</p>'];
+                $_SESSION['errors'][] = ['title' => 'Что-то пошло не так', 'desc' => '<p>Произошла ошибка. Повторите отправку формы еще раз.</p>'];
             }
         } else {
-            $errors[] = ['title' => 'Неверный Email'];            
+            $_SESSION['errors'][] = ['title' => 'Неверный Email'];            
         }
     }
 }

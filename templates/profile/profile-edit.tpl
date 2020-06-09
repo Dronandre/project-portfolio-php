@@ -18,9 +18,9 @@
             <div class="section__body">
                 <div class="container">
                     <?php if (isset($uriArray[1])) : ?>
-                        <form action="<?php echo HOST ?>profile-edit/<?= $uriArray[1] ?>" method="POST">
+                        <form enctype="multipart/form-data" action="<?php echo HOST ?>profile-edit/<?= $uriArray[1] ?>" method="POST">
                         <?php else : ?>
-                            <form action="<?php echo HOST ?>profile-edit" method="POST">
+                            <form enctype="multipart/form-data" action="<?php echo HOST ?>profile-edit" method="POST">
                             <?php endif; ?>
                             <div class="row justify-content-center">
                                 <div class="col-md-8">
@@ -45,20 +45,30 @@
                             </div>
                             <div class="row justify-content-center pt-40 pb-40">
                                 <div class="col-2">
-                                    <div class="avatar-big"><img src="<?php echo HOST; ?>static/img/section-about-me/img-01.jpg" alt="Аватарка" /></div>
+                                    <div class="avatar-big">
+                                        <?php if (!empty($user->avatar)) : ?>
+                                            <img src="<?php echo HOST ?>usercontent/avatars/<?= $user->avatar ?> " alt="Аватарка" />
+                                        <?php else : ?>
+                                            <img src="<?php echo HOST ?>usercontent/avatars/no_avatar.png " alt="Аватарка" />
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="block-upload">
                                         <div class="block-upload__description">
                                             <div class="block-upload__title">Фотография</div>
-                                            <p>Изображение jpg или png, рекомендуемая ширина 945px и больше, высота от 400px и более. Вес до 2Мб.</p>
+                                            <p>Изображение jpg или png, рекомендуемая ширина 160px и больше, высота от 160px и более. Вес до 4Мб.</p>
                                             <div class="block-upload__file-wrapper">
-                                                <button class="file-button" type="file">Выбрать файл</button>
-                                                <div class="block-upload__file-name">Файл не выбран</div>
+                                                <input class="file-button" type="file" name="avatar">
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="delete-button mt-20" type="reset">Удалить</button>
+                                    <?php if (!empty($user->avatar)) : ?>
+                                        <label class="checkbox__item mt-15">
+                                            <input class="checkbox__btn" type="checkbox" name="delete-avatar">
+                                            <span class="checkbox__label">Удалить изображение</span>
+                                        </label>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="row justify-content-center">

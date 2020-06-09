@@ -1,6 +1,6 @@
 <?php
-if (!empty($success)) :
-    foreach ($success as $item) :
+if (!empty($_SESSION['success'])) :
+    foreach ($_SESSION['success'] as $item) :
         if (count($item) == 1) :
 ?>
             <div class="notifications mb-20">
@@ -18,5 +18,6 @@ if (!empty($success)) :
 <?php
         endif;
     endforeach;
+    $_SESSION['success'] = array();
 endif;
 ?>

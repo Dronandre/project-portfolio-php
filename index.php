@@ -2,9 +2,10 @@
 
 require_once "config.php";
 require_once "db.php";
+require_once "./libs/resize-and-crop.php";
 
-$errors = array();
-$success = array();
+$_SESSION['errors'] = array();
+$_SESSION['success'] = array();
 
 session_start();
 

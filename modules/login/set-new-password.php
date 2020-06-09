@@ -16,20 +16,20 @@ if ( !empty($_GET['email']) && !empty($_GET['code'])) {
     if($user) {
         if ($user->recovery_code === $_POST['resetCode'] && $user->recovery_code != '' && $user->recovery_code != NULL) {
             if(trim($_POST['password'] == '' )){
-                $errors[] = ['title' => 'Введите пароль'];
+                $_SESSION['errors'][] = ['title' => 'Введите пароль'];
             } else if (strlen($_POST['password']) <= 4){
-                $errors[] = ['title' => 'Пароль должен быть больше 4-х символов'];
+                $_SESSION['errors'][] = ['title' => 'Пароль должен быть больше 4-х символов'];
             }
-            if( empty($errors) ) {
+            if( empty($_SESSION['errors']) ) {
                 $user->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 $user->recovery_code = '';
                 R::store($user);
-                $success[] = ['title' => 'Пароль успешно обновлен'];
+                $_SESSION['success'] = ['title' => 'Пароль успешно обновлен'];
                 $newPasswordReady =- true;
             }            
         }
     } else {
-        $errors[] = ['title' => 'Неверный пароль'];
+        $_SESSION['errors'][] = ['title' => 'Неверный пароль'];
     }
 
 } else {

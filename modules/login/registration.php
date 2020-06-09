@@ -6,26 +6,26 @@ $pageClass = "authorization-page";
 
 if(isset($_POST['register'])){
     if(trim($_POST['email'] == '')){
-        $errors[] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
+        $_SESSION['errors'][] = ['title' => 'Введите email', 'desc' => '<p>Email обязателен при регистрации на сайте</p>'];
     } else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = ['title' => 'Введите корректный Email'];
+        $_SESSION['errors'][] = ['title' => 'Введите корректный Email'];
     }    
     if(trim($_POST['password'] == '' )){
-        $errors[] = ['title' => 'Введите пароль'];
+        $_SESSION['errors'][] = ['title' => 'Введите пароль'];
     } else if (strlen($_POST['password']) <= 4){
-        $errors[] = ['title' => 'Пароль должен быть больше 4-х символов'];
+        $_SESSION['errors'][] = ['title' => 'Пароль должен быть больше 4-х символов'];
     }
 
     // Проверка что пользователь еще не зарегистрирован    
     if (R::count('users', 'email = ?', array($_POST['email'])) > 0) {
-        $errors[] = [
+        $_SESSION['errors'][] = [
             'title' => 'Пользователь с таким Email уже зарегистрирован', 
             'desc' => '<p>Используйте другой Email адрес, или воспользуйтесь 
             <a href="'.HOST.'lost-password"> восстановлением пароля</a> .</p>'];        
     }
 
     // Добавление в бд
-    if( empty($errors) ) {
+    if( empty($_SESSION['errors']) ) {
         $user = R::dispense('users');
         $user->email = $_POST['email'];
         $user->role = 'user';
@@ -37,10 +37,14 @@ if(isset($_POST['register'])){
             $_SESSION['login'] = 1;
             $_SESSION['role'] = $user->role;
 
+            $_SESSION['success'][] = [
+                'title' => 'Регистрация завершена', 
+                'desc' => '<p>Заполните свой профиль для дальнейшего использования сайтом.</p>'];  
+
             header('Location:' . HOST . "profile-edit");
             exit();
         } else {
-            $errors[] = ['title' => 'Что-то пошло не так.Повторите действие заново'];
+            $_SESSION['errors'][] = ['title' => 'Что-то пошло не так.Повторите действие заново'];
         }
     }
 }
