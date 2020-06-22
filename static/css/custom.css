@@ -51,3 +51,9 @@ html {
     text-decoration: none;
     opacity: 0.7;    
 }
+
+/* Admin panel */
+
+.control-panel__list-img-badge {
+    border-radius: 10px;
+}

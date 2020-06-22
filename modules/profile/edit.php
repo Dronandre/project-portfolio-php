@@ -119,9 +119,9 @@ function updateUserAndGoToProfile($user){
             
         } else if ($_SESSION['logged_user']['role'] === 'admin') { 
             
-            if (isset($uriArray[1])) {
+            if (isset($uriGet)) {
                 // Редактирование чужого профиля
-                $user = R::load('users', intval($uriArray[1]));
+                $user = R::load('users', intval($uriGet));
 
                 updateUserAndGoToProfile($user);                
 

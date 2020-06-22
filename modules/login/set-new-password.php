@@ -24,7 +24,7 @@ if ( !empty($_GET['email']) && !empty($_GET['code'])) {
                 $user->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 $user->recovery_code = '';
                 R::store($user);
-                $_SESSION['success'] = ['title' => 'Пароль успешно обновлен'];
+                $_SESSION['success'][] = ['title' => 'Пароль успешно обновлен'];
                 $newPasswordReady =- true;
             }            
         }

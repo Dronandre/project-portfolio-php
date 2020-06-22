@@ -3,8 +3,8 @@
 $pageTitle = "Профиль пользователя";
 $pageClass = "profile-page";
 
-if (isset($uriArray[1])) {
-    $user = R::load('users', $uriArray[1]);
+if (isset($uriGet)) {
+    $user = R::load('users', $uriGet);
 } else {
     if (isset($_SESSION['login']) && $_SESSION['login'] === 1) {
         
@@ -13,10 +13,6 @@ if (isset($uriArray[1])) {
         $userNotLoggedIn = true;
     }
 }
-
-
-
-
 
 include ROOT . "templates/_page-parts/_head.tpl";
 include ROOT . "templates/_parts/_header.tpl";
