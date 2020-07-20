@@ -5,15 +5,17 @@ require_once "./../db.php";
 require_once ROOT . "libs/resize-and-crop.php";
 require_once ROOT . "libs/functions.php";
 
-
 $_SESSION['errors'] = array();
 $_SESSION['success'] = array();
-
 session_start();
 
+// Проверка на права доступа
+if ( !(isset($_SESSION['role']) && $_SESSION['role'] === 'admin') ) {
+    header('Location:' . HOST . 'login');
+    exit();
+}
+
 // ---------------------РОУТЕР---------------------------
-
-
 
 $uriModule = getModuleNameForAdmin();
 

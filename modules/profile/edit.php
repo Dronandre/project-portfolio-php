@@ -91,6 +91,7 @@ function updateUserAndGoToProfile($user){
                     $user->avatarSmall = '48-' . $db_file_name;                    
                 }
             }
+            
             // Удаление изображения
             if (isset($_POST['delete-avatar']) && $_POST['delete-avatar'] == 'on') {
                 // Удаление физического изображения

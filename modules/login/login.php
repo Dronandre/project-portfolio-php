@@ -22,7 +22,7 @@ if (isset($_POST['login'])) {
         if ($user) {
             if (password_verify($_POST['password'], $user->password)) {
                 // $_SESSION['success'] = ['title' => 'Верный пароль'];
-                // Автологин пользователя
+                // Логин пользователя
                 $_SESSION['logged_user'] = $user;
                 $_SESSION['login'] = 1;
                 $_SESSION['role'] = $user->role;
