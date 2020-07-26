@@ -8,7 +8,7 @@
 				<div class="admin-form__item d-flex justify-content-between mb-20">
 					<h2 class="heading">Блог - все записи </h2><a class="secondary-button" href="<?=HOST?>admin/post-new">Добавить запись</a>
 				</div>
-				<table class="table">
+				<table class="table">					
 					<thead>
 						<tr>
 							<th>ID</th>
@@ -17,34 +17,15 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td><a href="#">Заметки путешественника</a></td>
-							<td>
-								<button class="icon-delete"></button>
-							</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td><a href="#">Заметки программиста</a></td>
-							<td>
-								<button class="icon-delete"></button>
-							</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td><a href="#">Заметки спортсмена</a></td>
-							<td>
-								<button class="icon-delete"></button>
-							</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td><a href="#">Заметки фотографа</a></td>
-							<td>
-								<button class="icon-delete"></button>
-							</td>
-						</tr>
+						<?php foreach($posts as $post): ?>
+							<tr>
+								<td><?=$post['id']?></td>
+								<td><a href="<?php echo HOST . "admin/"; ?>post-edit?id=<?=$post['title']?>"><?=$post['title']?></a></td>
+								<td>
+									<button class="icon-delete"></button>
+								</td>
+							</tr>
+						<?php endforeach; ?>					
 					</tbody>
 				</table>
 				<div class="admin-form__item pt-40">

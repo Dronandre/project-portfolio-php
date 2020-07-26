@@ -13,6 +13,8 @@ if (isset($_POST['postSubmit'])) {
         $post = R::dispense('posts');
         $post->title = $_POST['title'];
         $post->content = $_POST['content'];
+        $post->timestamp = time();
+
 
          // Работа с изображением аватара
 
