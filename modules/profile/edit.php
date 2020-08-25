@@ -1,5 +1,8 @@
 <?php
 
+// echo print_r($_SESSION['logged_user']);
+// die();
+
 function updateUserAndGoToProfile($user){
     if (isset($_POST['updateProfile'])) {
         
@@ -103,7 +106,12 @@ function updateUserAndGoToProfile($user){
                 $user->avatarSmall = '';
             }
             R::store($user);
-            $_SESSION['logged_user'] = $user;  
+            
+            // $_SESSION['logged_user'] = $user; 
+            if ($_SESSION['logged_user']['role'] === 'admin'){
+                $_SESSION['logged_user'] = $user; 
+            }
+            
             header('Location: ' . HOST . 'profile');
             exit();          
         }
