@@ -21,7 +21,7 @@ function getModuleNameForAdmin()
 
     // Достаем имя модуля который надо запустить admin/blog => blog
     $uriModule = isset($moduleNameArr[1]) ? $moduleNameArr[1] : null;
-    
+
     return $uriModule; // blog
 }
 
@@ -65,62 +65,93 @@ function getUriGet()
 }
 
 // Функция даты и времени
-function rus_date(){
+function rus_date()
+{
     // Перевод
-	$translate = array(
-		"am" => "дп",
-		"pm" => "пп",
-		"AM" => "ДП",
-		"PM" => "ПП",
-		"Monday" => "Понедельник",
-		"Mon" => "Пн",
-		"Tuesday" => "Вторник",
-		"Tue" => "Вт",
-		"Wednesday" => "Среда",
-		"Wed" => "Ср",
-		"Thursday" => "Четверг",
-		"Thu" => "Чт",
-		"Friday" => "Пятница",
-		"Fri" => "Пт",
-		"Saturday" => "Суббота",
-		"Sat" => "Сб",
-		"Sunday" => "Воскресенье",
-		"Sun" => "Вс",
-		"January" => "Января",
-		"Jan" => "Янв",
-		"February" => "Февраля",
-		"Feb" => "Фев",
-		"March" => "Марта",
-		"Mar" => "Мар",
-		"April" => "Апреля",
-		"Apr" => "Апр",
-		"May" => "Мая",
-		"May" => "Мая",
-		"June" => "Июня",
-		"Jun" => "Июн",
-		"July" => "Июля",
-		"Jul" => "Июл",
-		"August" => "Августа",
-		"Aug" => "Авг",
-		"September" => "Сентября",
-		"Sep" => "Сен",
-		"October" => "Октября",
-		"Oct" => "Окт",
-		"November" => "Ноября",
-		"Nov" => "Ноя",
-		"December" => "Декабря",
-		"Dec" => "Дек",
-		"st" => "ое",
-		"nd" => "ое",
-		"rd" => "е",
-		"th" => "ое"
+    $translate = array(
+        "am" => "дп",
+        "pm" => "пп",
+        "AM" => "ДП",
+        "PM" => "ПП",
+        "Monday" => "Понедельник",
+        "Mon" => "Пн",
+        "Tuesday" => "Вторник",
+        "Tue" => "Вт",
+        "Wednesday" => "Среда",
+        "Wed" => "Ср",
+        "Thursday" => "Четверг",
+        "Thu" => "Чт",
+        "Friday" => "Пятница",
+        "Fri" => "Пт",
+        "Saturday" => "Суббота",
+        "Sat" => "Сб",
+        "Sunday" => "Воскресенье",
+        "Sun" => "Вс",
+        "January" => "Января",
+        "Jan" => "Янв",
+        "February" => "Февраля",
+        "Feb" => "Фев",
+        "March" => "Марта",
+        "Mar" => "Мар",
+        "April" => "Апреля",
+        "Apr" => "Апр",
+        "May" => "Мая",
+        "May" => "Мая",
+        "June" => "Июня",
+        "Jun" => "Июн",
+        "July" => "Июля",
+        "Jul" => "Июл",
+        "August" => "Августа",
+        "Aug" => "Авг",
+        "September" => "Сентября",
+        "Sep" => "Сен",
+        "October" => "Октября",
+        "Oct" => "Окт",
+        "November" => "Ноября",
+        "Nov" => "Ноя",
+        "December" => "Декабря",
+        "Dec" => "Дек",
+        "st" => "ое",
+        "nd" => "ое",
+        "rd" => "е",
+        "th" => "ое"
     );
     // если передали дату, то переводим ее
-    if ( func_num_args() > 1 ) {
+    if (func_num_args() > 1) {
         return strtr(date(func_get_arg(0), func_get_arg(1)), $translate);
     }
     // иначе генерируем текущее время
     else {
         return strtr(date(func_get_arg(0)), $translate);
     }
+}
+
+function pagination($results_per_page, $type){
+
+    // определяем текущий номер запрашиваемой страницы
+    if (!isset($_GET['page'])) {
+        $page_number = 1;
+    } else {
+        $page_number = intval($_GET['page']);
+    }
+
+    //Считаем количество страниц пагинации
+    $number_of_results = R::count($type);
+    $number_of_pages = ceil($number_of_results / $results_per_page);
+
+    //Если запросили не существующую страницу
+    if ($page_number > $number_of_pages) {
+        $page_number = $number_of_pages;
+    }
+
+     // Определяем с какого поста начать вывод
+     $starting_limit_number = ($page_number - 1) * $results_per_page;
+
+    $sql_page_limit = "LIMIT {$starting_limit_number}, {$results_per_page}";
+
+    $result['number_of_pages'] = $number_of_pages;
+    $result['page_number'] = $page_number;
+    $result['sql_page_limit'] = $sql_page_limit;
+
+    return $result;
 }
